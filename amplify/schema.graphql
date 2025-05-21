@@ -1,0 +1,210 @@
+# This is an example schema.graphql file for your Farm Fresh app
+# You'll need to customize this based on your specific requirements
+
+type User @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  username: String!
+  email: String!
+  name: String
+  phone: String
+  avatar: String
+  addresses: [Address] @hasMany
+  preferences: UserPreferences @hasOne
+  orders: [Order] @hasMany
+  cart: [CartItem] @hasMany
+  favorites: [Favorite] @hasMany
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Address @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  userId: ID! @index
+  default: Boolean
+  street: String!
+  city: String!
+  state: String!
+  zip: String!
+  instructions: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type UserPreferences @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  userId: ID! @index
+  favoriteCategories: [String]
+  dietaryRestrictions: [String]
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Farm @model @auth(rules: [
+  { allow: owner, operations: [create, update, delete] },
+  { allow: public, operations: [read] }
+]) {
+  id: ID!
+  name: String!
+  description: String
+  image: String
+  coverImage: String
+  location: String!
+  deliveryZones: [String]
+  rating: Float
+  reviewCount: Int
+  products: [Product] @hasMany
+  posts: [FarmPost] @hasMany
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type FarmPost @model @auth(rules: [
+  { allow: owner, operations: [create, update, delete] },
+  { allow: public, operations: [read] }
+]) {
+  id: ID!
+  farmId: ID! @index
+  title: String!
+  content: String!
+  image: String
+  likes: Int
+  comments: [Comment] @hasMany
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Comment @model @auth(rules: [
+  { allow: owner, operations: [create, update, delete] },
+  { allow: public, operations: [read] }
+]) {
+  id: ID!
+  postId: ID! @index
+  userId: ID!
+  content: String!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Category @model @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  name: String!
+  image: String
+  subcategories: [Subcategory] @hasMany
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Subcategory @model @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  categoryId: ID! @index
+  name: String!
+  image: String
+  varieties: [Variety] @hasMany
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Variety @model @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  subcategoryId: ID! @index
+  name: String!
+  image: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Product @model @auth(rules: [
+  { allow: owner, operations: [create, update, delete] },
+  { allow: public, operations: [read] }
+]) {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  image: String
+  category: String!
+  subcategory: String
+  variety: String
+  farmId: ID! @index
+  farm: Farm @belongsTo(fields: ["farmId"])
+  organic: Boolean
+  inSeason: Boolean
+  preHarvest: Boolean
+  freshness: Int
+  harvestDate: AWSDate
+  zone: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type CartItem @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  userId: ID! @index
+  productId: ID!
+  product: Product @hasOne
+  farmId: ID!
+  quantity: Int!
+  price: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Favorite @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  userId: ID! @index
+  itemId: ID!
+  itemType: String! # "product" or "farm"
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Order @model @auth(rules: [
+  { allow: owner },
+  { allow: groups, groups: ["Admin"] }
+]) {
+  id: ID!
+  userId: ID! @index
+  items: [OrderItem] @hasMany
+  total: Float!
+  status: OrderStatus!
+  paymentMethod: String
+  deliveryAddress: Address @hasOne
+  deliveryDate: AWSDateTime
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type OrderItem @model @auth(rules: [
+  { allow: owner },
+  { allow: groups, groups: ["Admin"] }
+]) {
+  id: ID!
+  orderId: ID! @index
+  productId: ID!
+  product: Product @hasOne
+  farmId: ID!
+  quantity: Int!
+  price: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+type Recommendation @model @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  productId: ID!
+  product: Product @hasOne
+  reason: String
+  score: Float
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# Add any additional types or queries as needed
