@@ -26,10 +26,8 @@ export const farmsSectionStyles = StyleSheet.create({
   },
   farmsContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 16,
   },
   farmContentContainer: {
-    paddingHorizontal: 6,
     gap: 16,
   },
 }); 

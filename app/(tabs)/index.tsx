@@ -196,9 +196,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E5E5E5',
   },
   addressBarWrapper: {
-    marginBottom: 8,
+    marginBottom: 0,
   },
   searchBarWrapper: {
+    marginTop: 0,
     marginBottom: 0,
     paddingTop: 0,
   },
@@ -629,18 +630,19 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       ? seasonalStyles.getBorderColor(0.2) 
       : styles.headerContainer.borderBottomColor,
     borderBottomWidth: seasonalStyles.isSeasonalActive ? 1 : 0,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   };
 
   return (
     <View style={[styles.container, seasonalBackgroundStyle]}>
-      {/* Gradient Background */}
+      {/* Gradient as background */}
       <LinearGradient
-        colors={['rgba(0,0,0,0.8)', 'rgba(255,255,255,0)']}
-        style={styles.gradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.5 }}
+        colors={['rgba(0,0,0,0.8)', 'rgba(255,255,121,0)']}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 232, zIndex: 0 }}
+        start={{ x: 0, y: 0.2 }}
+        end={{ x: 0, y: 0.91 }}
       />
-
       {/* Header (Address bar and Search) */}
       <Animated.View style={headerBackgroundStyle}>
         <View style={styles.addressBarWrapper}>
@@ -663,27 +665,24 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           )}
           scrollEventThrottle={16}
         >
-          {/* Instantly Available Section */}
-          <InstantlyAvailableSection />
-
-          {/* Magic Basket Banner */}
-          <MagicBasketBanner />
-
-          {/* Seasonal Products Section */}
-          {seasonalStyles.isSeasonalActive && (
-            <SeasonalProductsSection
-              products={products.filter(p => p.seasons?.includes(season))}
-              loading={false}
-            />
-          )}
-
-          {/* Categories */}
+          {/* Categories - should be first under search bar */}
           <CategoriesSection 
             categories={categories}
             selectedCategory={selectedCategory}
             onCategoryPress={handleCategoryPress}
             onClearFilters={handleClearFilters}
           />
+
+          {/* Magic Basket Banner */}
+          <MagicBasketBanner />
+
+          {/* Featured Farms */}
+          {(!selectedCategory && farms.length > 0) && (
+            <FeaturedFarmsSection farms={farms} />
+          )}
+
+          {/* Instantly Available Section */}
+          <InstantlyAvailableSection />
 
           {/* Subcategories - Only show if a category is selected */}
           {selectedCategory && subcategories.length > 0 && (
@@ -702,9 +701,12 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             />
           )}
           
-          {/* Featured Farms - Only show when no category is selected */}
-          {!selectedCategory && farms.length > 0 && (
-            <FeaturedFarmsSection farms={farms} />
+          {/* Seasonal Products Section */}
+          {seasonalStyles.isSeasonalActive && (
+            <SeasonalProductsSection
+              products={products.filter(p => p.seasons?.includes(season))}
+              loading={false}
+            />
           )}
           
           {/* Fresh Picks - Only show when no category is selected */}

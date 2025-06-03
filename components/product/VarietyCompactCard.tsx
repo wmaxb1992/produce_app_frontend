@@ -74,7 +74,7 @@ const VarietyCompactCard: React.FC<VarietyCompactCardProps> = ({ variety, produc
           {isAdding ? (
             <ActivityIndicator size="small" color={colors.text} />
           ) : (
-            <Plus size={16} color={colors.text} />
+            <Plus size={12} color="#555454FF" strokeWidth={2.5} />
           )}
         </TouchableOpacity>
       </TouchableOpacity>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'relative',
-    paddingBottom: 2,
+    paddingBottom: 7,
     justifyContent: 'center',
     alignItems: 'center',
     
@@ -123,16 +123,16 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    bottom: 0,
-    right: 1,
-    width: 22,
-    height: 22,
-    borderRadius: 12,
+    bottom: 3,
+    right: 2,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 2,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 0.2 },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
   },

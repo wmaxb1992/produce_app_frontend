@@ -63,6 +63,7 @@ export default function TabsLayout() {
             source={SoilGradient2}
             style={{ flex: 1, width: '100%', height: '180%', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
             resizeMode="stretch"
+            imageStyle={{ opacity: 0.86 }}
           />
         ),
       }}

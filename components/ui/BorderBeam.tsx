@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, ViewStyle } from 'react-native';
+import { Sparkles } from 'lucide-react-native';
 
 interface BorderBeamProps {
   duration?: number;
@@ -112,17 +113,36 @@ export const BorderBeam = ({
             width: thickness * 4,
             height: thickness * 4,
             borderRadius: thickness * 4,
-            backgroundColor: color,
+            backgroundColor: 'transparent',
             opacity: opacity * 1.5,
+            zIndex: 10,
             shadowColor: color,
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 1,
             shadowRadius: 8,
-            top: positionStyle.top,
-            left: positionStyle.left,
+            alignItems: 'center',
+            justifyContent: 'center',
+            // Offset the sparkle outward so it sits over the border line
+            transform: [
+              { translateX: Animated.add(positionStyle.left, new Animated.Value(-(thickness * 4))) },
+              { translateY: Animated.add(positionStyle.top, new Animated.Value(-(thickness * 4))) }
+            ],
           }
         ]}
-      />
+      >
+        {/* Filled circle behind the sparkle */}
+        <View
+          style={{
+            position: 'absolute',
+            width: thickness * 2.8,
+            height: thickness * 2.8,
+            borderRadius: (thickness * 2.8) / 2,
+            backgroundColor: color,
+            opacity: 0.7,
+          }}
+        />
+        <Sparkles size={thickness * 4} color="#FFD700" />
+      </Animated.View>
       
       {/* Glow effect trail following the dot */}
       <Animated.View
