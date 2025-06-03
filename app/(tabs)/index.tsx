@@ -24,6 +24,7 @@ import {
   SearchBarSkeleton
 } from '@/components/ui/Skeleton';
 import LoadingState from '@/components/ui/LoadingState';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Import our extracted components
 import AddressBar from '@/components/home/AddressBar';
@@ -36,6 +37,7 @@ import FeaturedFarmsSection from '@/components/home/FeaturedFarmsSection';
 import SubscriptionBundlesSection from '@/components/home/SubscriptionBundlesSection';
 import SeasonalHeader from '@/components/home/SeasonalHeader';
 import SeasonalProductsSection from '@/components/home/SeasonalProductsSection';
+import InstantlyAvailableSection from '@/components/home/InstantlyAvailableSection';
 
 // Local styles for components not yet moved to separate style files
 const styles = StyleSheet.create({
@@ -197,15 +199,23 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   searchBarWrapper: {
-    marginBottom: 4,
+    marginBottom: 0,
     paddingTop: 0,
   },
   mainContainer: {
     flex: 1,
   },
   mainContent: {
-    paddingTop: 8,
-  }
+    paddingTop: 0,
+  },
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: Dimensions.get('window').height * 0.5,
+    zIndex: 0,
+  },
 });
 
 // Add a helper function to format the address
@@ -623,6 +633,14 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   return (
     <View style={[styles.container, seasonalBackgroundStyle]}>
+      {/* Gradient Background */}
+      <LinearGradient
+        colors={['rgba(0,0,0,0.8)', 'rgba(255,255,255,0)']}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.5 }}
+      />
+
       {/* Header (Address bar and Search) */}
       <Animated.View style={headerBackgroundStyle}>
         <View style={styles.addressBarWrapper}>
@@ -645,6 +663,9 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           )}
           scrollEventThrottle={16}
         >
+          {/* Instantly Available Section */}
+          <InstantlyAvailableSection />
+
           {/* Magic Basket Banner */}
           <MagicBasketBanner />
 

@@ -1,6 +1,51 @@
 import { Category, Product, Subcategory, Variety } from '@/types';
 
 // Mock Varieties with emojis
+// Helper function to get card image path
+const getCardImagePath = (name: string): string => {
+  // Define base images for each category
+  const baseImages = {
+    apple: '../assets/images/farmitem_iconphotos/honeycrisp_apple.png',
+    avocado: '../assets/images/farmitem_iconphotos/haas_avocado.png',
+    tomato: '../assets/images/farmitem_iconphotos/cherry_tomato.png',
+    potato: '../assets/images/farmitem_iconphotos/russet_potato.png',
+  };
+
+  // Map variety names to their specific images
+  const mapping: Record<string, string> = {
+    // Apples
+    'Honeycrisp': baseImages.apple,
+    'Granny Smith': baseImages.apple,
+    'Fuji': baseImages.apple,
+    'Gala': baseImages.apple,
+    // Avocados
+    'Hass': baseImages.avocado,
+    'Bacon': baseImages.avocado,
+    // Tomatoes
+    'Cherry': baseImages.tomato,
+    'Roma': baseImages.tomato,
+    'Heirloom': baseImages.tomato,
+    // Potatoes
+    'Russet': baseImages.potato,
+    'Yukon Gold': baseImages.potato,
+    'Red': baseImages.potato,
+  };
+
+  // Return the specific image or determine the appropriate fallback
+  if (mapping[name]) {
+    return mapping[name];
+  }
+
+  // Determine category based on name patterns
+  if (name.toLowerCase().includes('apple')) return baseImages.apple;
+  if (name.toLowerCase().includes('avocado')) return baseImages.avocado;
+  if (name.toLowerCase().includes('tomato')) return baseImages.tomato;
+  if (name.toLowerCase().includes('potato')) return baseImages.potato;
+
+  // Default fallback
+  return baseImages.apple;
+};
+
 export const mockVarieties: Variety[] = [
   {
     id: 'v1',
@@ -8,6 +53,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub1',
     emoji: '🍎',
     description: 'Sweet and crisp apple variety',
+    cardImage: getCardImagePath('Honeycrisp'),
   },
   {
     id: 'v2',
@@ -15,6 +61,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub1',
     emoji: '🍏',
     description: 'Tart green apple variety',
+    cardImage: getCardImagePath('Granny Smith'),
   },
   {
     id: 'v3',
@@ -22,6 +69,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub1',
     emoji: '🍎',
     description: 'Sweet and juicy apple variety',
+    cardImage: getCardImagePath('Fuji'),
   },
   {
     id: 'v4',
@@ -29,6 +77,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub1',
     emoji: '🍎',
     description: 'Mildly sweet apple variety',
+    cardImage: getCardImagePath('Gala'),
   },
   {
     id: 'v5',
@@ -36,13 +85,15 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub2',
     emoji: '🥑',
     description: 'Creamy and rich avocado variety',
+    cardImage: getCardImagePath('Hass'),
   },
   {
     id: 'v6',
     name: 'Bacon',
     subcategoryId: 'sub2',
     emoji: '🥑',
-    description: 'Lighter flavor avocado variety',
+    description: 'Buttery avocado variety',
+    cardImage: getCardImagePath('Bacon'),
   },
   {
     id: 'v7',
@@ -50,6 +101,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub3',
     emoji: '🍌',
     description: 'Common sweet banana variety',
+    cardImage: getCardImagePath('Cavendish'),
   },
   {
     id: 'v8',
@@ -57,6 +109,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub3',
     emoji: '🍌',
     description: 'Sweeter, softer banana variety with reddish peel',
+    cardImage: getCardImagePath('Red Banana'),
   },
   {
     id: 'v9',
@@ -64,6 +117,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub3',
     emoji: '🍌',
     description: 'Starchy cooking banana variety',
+    cardImage: getCardImagePath('Plantain'),
   },
   {
     id: 'v10',
@@ -71,6 +125,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub4',
     emoji: '🍅',
     description: 'Large, meaty tomato variety',
+    cardImage: getCardImagePath('Beefsteak'),
   },
   {
     id: 'v11',
@@ -78,6 +133,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub4',
     emoji: '🍒',
     description: 'Small, sweet tomato variety',
+    cardImage: getCardImagePath('Cherry'),
   },
   {
     id: 'v12',
@@ -85,6 +141,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub4',
     emoji: '🍅',
     description: 'Egg-shaped tomato variety good for sauces',
+    cardImage: getCardImagePath('Roma'),
   },
   {
     id: 'v13',
@@ -92,6 +149,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub4',
     emoji: '🍅',
     description: 'Diverse, traditional tomato varieties',
+    cardImage: getCardImagePath('Heirloom'),
   },
   {
     id: 'v14',
@@ -99,6 +157,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub5',
     emoji: '🥔',
     description: 'Brown-skinned, starchy potato variety',
+    cardImage: getCardImagePath('Russet'),
   },
   {
     id: 'v15',
@@ -106,6 +165,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub5',
     emoji: '🥔',
     description: 'Yellow-fleshed, buttery potato variety',
+    cardImage: getCardImagePath('Yukon Gold'),
   },
   {
     id: 'v16',
@@ -113,6 +173,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub5',
     emoji: '🥔',
     description: 'Red-skinned, waxy potato variety',
+    cardImage: getCardImagePath('Red'),
   },
   {
     id: 'v17',
@@ -120,6 +181,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub5',
     emoji: '🍠',
     description: 'Orange-fleshed, sweet potato variety',
+    cardImage: getCardImagePath('Sweet'),
   },
   {
     id: 'v18',
@@ -127,6 +189,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub6',
     emoji: '🍊',
     description: 'Sweet, seedless orange variety',
+    cardImage: getCardImagePath('Navel'),
   },
   {
     id: 'v19',
@@ -134,6 +197,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub6',
     emoji: '🍊',
     description: 'Deep red-fleshed orange variety',
+    cardImage: getCardImagePath('Blood'),
   },
   {
     id: 'v20',
@@ -141,6 +205,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub6',
     emoji: '🍊',
     description: 'Juicy, sweet-tart orange variety',
+    cardImage: getCardImagePath('Valencia'),
   },
   {
     id: 'v21',
@@ -148,6 +213,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub7',
     emoji: '🥩',
     description: 'Premium beef variety known for marbling',
+    cardImage: getCardImagePath('Angus'),
   },
   {
     id: 'v22',
@@ -155,6 +221,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub7',
     emoji: '🥩',
     description: 'Highly marbled, tender beef variety',
+    cardImage: getCardImagePath('Wagyu'),
   },
   {
     id: 'v23',
@@ -162,6 +229,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub7',
     emoji: '🥩',
     description: 'Leaner beef from grass-fed cattle',
+    cardImage: getCardImagePath('Grass-fed'),
   },
   {
     id: 'v24',
@@ -169,6 +237,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub8',
     emoji: '🍗',
     description: 'Chicken raised with outdoor access',
+    cardImage: getCardImagePath('Free-range'),
   },
   {
     id: 'v25',
@@ -176,6 +245,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub8',
     emoji: '🍗',
     description: 'Chicken raised without antibiotics or hormones',
+    cardImage: getCardImagePath('Organic'),
   },
   {
     id: 'v26',
@@ -183,6 +253,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub8',
     emoji: '🍗',
     description: 'Traditional chicken breeds raised naturally',
+    cardImage: getCardImagePath('Heritage'),
   },
   {
     id: 'v27',
@@ -190,6 +261,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub9',
     emoji: '🐟',
     description: 'Common salmon variety from the Atlantic Ocean',
+    cardImage: getCardImagePath('Atlantic'),
   },
   {
     id: 'v28',
@@ -197,6 +269,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub9',
     emoji: '🐟',
     description: 'Red-fleshed, rich-flavored salmon variety',
+    cardImage: getCardImagePath('Sockeye'),
   },
   {
     id: 'v29',
@@ -204,6 +277,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub9',
     emoji: '🐟',
     description: 'Milder-flavored salmon variety',
+    cardImage: getCardImagePath('Coho'),
   },
   {
     id: 'v30',
@@ -211,6 +285,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub10',
     emoji: '🥛',
     description: 'Full-fat milk',
+    cardImage: getCardImagePath('Whole'),
   },
   {
     id: 'v31',
@@ -218,6 +293,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub10',
     emoji: '🥛',
     description: 'Reduced-fat milk',
+    cardImage: getCardImagePath('2%'),
   },
   {
     id: 'v32',
@@ -225,6 +301,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub10',
     emoji: '🥛',
     description: 'Fat-free milk',
+    cardImage: getCardImagePath('Skim'),
   },
   {
     id: 'v33',
@@ -232,6 +309,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub11',
     emoji: '🧀',
     description: 'Sharp, aged cheese variety',
+    cardImage: getCardImagePath('Cheddar'),
   },
   {
     id: 'v34',
@@ -239,6 +317,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub11',
     emoji: '🧀',
     description: 'Soft, creamy cheese variety',
+    cardImage: getCardImagePath('Brie'),
   },
   {
     id: 'v35',
@@ -246,6 +325,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub11',
     emoji: '🧀',
     description: 'Strong, veined cheese variety',
+    cardImage: getCardImagePath('Blue'),
   },
   {
     id: 'v36',
@@ -253,6 +333,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub11',
     emoji: '🧀',
     description: 'Mild, stretchy cheese variety',
+    cardImage: getCardImagePath('Mozzarella'),
   },
   {
     id: 'v37',
@@ -260,6 +341,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub12',
     emoji: '🥕',
     description: 'Sweet, tender baby carrots',
+    cardImage: getCardImagePath('Baby Carrots'),
   },
   {
     id: 'v38',
@@ -267,6 +349,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub12',
     emoji: '🥕',
     description: 'Colorful heirloom carrot variety',
+    cardImage: getCardImagePath('Rainbow Carrots'),
   },
   {
     id: 'v39',
@@ -274,6 +357,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub13',
     emoji: '🥦',
     description: 'Classic broccoli crown',
+    cardImage: getCardImagePath('Crown'),
   },
   {
     id: 'v40',
@@ -281,6 +365,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub13',
     emoji: '🥦',
     description: 'Tender stem broccoli',
+    cardImage: getCardImagePath('Broccolini'),
   },
   {
     id: 'v41',
@@ -288,6 +373,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub14',
     emoji: '🫑',
     description: 'Sweet red bell pepper',
+    cardImage: getCardImagePath('Red'),
   },
   {
     id: 'v42',
@@ -295,6 +381,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub14',
     emoji: '🫑',
     description: 'Mild yellow bell pepper',
+    cardImage: getCardImagePath('Yellow'),
   },
   {
     id: 'v43',
@@ -302,6 +389,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub14',
     emoji: '🫑',
     description: 'Crisp green bell pepper',
+    cardImage: getCardImagePath('Green'),
   },
   {
     id: 'v44',
@@ -309,6 +397,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub15',
     emoji: '🥬',
     description: 'Crisp romaine lettuce',
+    cardImage: getCardImagePath('Romaine'),
   },
   {
     id: 'v45',
@@ -316,6 +405,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub15',
     emoji: '🥬',
     description: 'Soft butter lettuce',
+    cardImage: getCardImagePath('Butter'),
   },
   {
     id: 'v46',
@@ -323,6 +413,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub16',
     emoji: '🧅',
     description: 'Sharp red onion',
+    cardImage: getCardImagePath('Red'),
   },
   {
     id: 'v47',
@@ -330,6 +421,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub16',
     emoji: '🧅',
     description: 'Mild sweet onion',
+    cardImage: getCardImagePath('Sweet'),
   },
   {
     id: 'v48',
@@ -337,6 +429,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub16',
     emoji: '🧅',
     description: 'All-purpose white onion',
+    cardImage: getCardImagePath('White'),
   },
   {
     id: 'v49',
@@ -344,6 +437,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub17',
     emoji: '🍄',
     description: 'Large meaty mushroom',
+    cardImage: getCardImagePath('Portobello'),
   },
   {
     id: 'v50',
@@ -351,6 +445,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub17',
     emoji: '🍄',
     description: 'Savory Asian mushroom',
+    cardImage: getCardImagePath('Shiitake'),
   },
   {
     id: 'v51',
@@ -358,6 +453,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub18',
     emoji: '🥒',
     description: 'Fresh green zucchini',
+    cardImage: getCardImagePath('Green'),
   },
   {
     id: 'v52',
@@ -365,6 +461,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub18',
     emoji: '🥒',
     description: 'Yellow summer squash',
+    cardImage: getCardImagePath('Yellow'),
   },
   {
     id: 'v53',
@@ -372,6 +469,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub19',
     emoji: '🥒',
     description: 'Long seedless cucumber',
+    cardImage: getCardImagePath('English'),
   },
   {
     id: 'v54',
@@ -379,6 +477,7 @@ export const mockVarieties: Variety[] = [
     subcategoryId: 'sub19',
     emoji: '🥒',
     description: 'Small, crisp cucumber',
+    cardImage: getCardImagePath('Persian'),
   },
 ];
 
@@ -554,7 +653,7 @@ export const mockCategories: Category[] = [
   {
     id: 'cat3',
     name: 'Meat & Fish',
-    image: '/assets/images/cat_meat_fish.png',
+    image: 'assets/images/cat_meat_fish.png',
     subcategories: mockSubcategories.filter(sub => sub.categoryId === 'cat3'),
   },
 ];
@@ -575,6 +674,7 @@ export const mockProducts: Product[] = [
     rating: 4.8,
     reviewCount: 124,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'lb',
     weight: 1,
@@ -598,6 +698,7 @@ export const mockProducts: Product[] = [
     rating: 4.5,
     reviewCount: 89,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: false,
     unit: 'each',
     freshness: 92,
@@ -620,6 +721,7 @@ export const mockProducts: Product[] = [
     rating: 4.7,
     reviewCount: 102,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'pint',
     freshness: 97,
@@ -642,6 +744,7 @@ export const mockProducts: Product[] = [
     rating: 4.3,
     reviewCount: 78,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: false,
     unit: 'lb',
     weight: 5,
@@ -665,6 +768,7 @@ export const mockProducts: Product[] = [
     rating: 4.9,
     reviewCount: 156,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'lb',
     weight: 1,
@@ -688,6 +792,7 @@ export const mockProducts: Product[] = [
     rating: 4.6,
     reviewCount: 112,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'half-gallon',
     freshness: 94,
@@ -708,6 +813,7 @@ export const mockProducts: Product[] = [
     rating: 4.8,
     reviewCount: 98,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: false,
     unit: 'loaf',
     freshness: 100,
@@ -728,6 +834,7 @@ export const mockProducts: Product[] = [
     rating: 4.5,
     reviewCount: 67,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'bunch',
     freshness: 98,
@@ -750,6 +857,7 @@ export const mockProducts: Product[] = [
     rating: 4.7,
     reviewCount: 85,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'lb',
     weight: 1,
@@ -773,6 +881,7 @@ export const mockProducts: Product[] = [
     rating: 4.6,
     reviewCount: 104,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: false,
     unit: 'lb',
     weight: 1,
@@ -855,6 +964,7 @@ export const mockProducts: Product[] = [
     rating: 4.9,
     reviewCount: 76,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: '4 oz',
     freshness: 96,
@@ -875,6 +985,7 @@ export const mockProducts: Product[] = [
     rating: 4.6,
     reviewCount: 83,
     inStock: true,
+    availableForInstantDelivery: true,
     isOrganic: true,
     unit: 'bunch',
     freshness: 95,

@@ -1,25 +1,99 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CartItem, CartGroup, Product } from '@/types';
+import { CartItem, CartGroup, Product, Variety } from '@/types';
 
 interface CartState {
   items: CartItem[];
   addItem: (product: Product, quantity: number) => void;
+  addVarietyToCart: (variety: Variety, products: Product[]) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
   getCartGroups: () => CartGroup[];
-  // New function for magic basket
   generateMagicCart: (productIds: string[], allProducts: Product[]) => void;
 }
+
+// Helper function to select the best product from available options
+const selectBestProduct = (products: Product[]): Product => {
+  // Sort products by a weighted score
+  return products.sort((a, b) => {
+    // Calculate scores based on multiple factors
+    const scoreA = calculateProductScore(a);
+    const scoreB = calculateProductScore(b);
+    return scoreB - scoreA;
+  })[0]; // Return the product with the highest score
+};
+
+// Calculate a score for each product based on various factors
+const calculateProductScore = (product: Product): number => {
+  let score = 0;
+  
+  // Price factor (lower is better)
+  score += (1 / product.price) * 10;
+  
+  // Rating factor
+  score += product.rating * 2;
+  
+  // Freshness factor
+  if (product.freshness) {
+    score += (product.freshness / 100) * 5;
+  }
+  
+  // Review count factor (more reviews = more reliable rating)
+  score += Math.min(product.reviewCount / 100, 1) * 3;
+  
+  return score;
+};
 
 const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      addVarietyToCart: (variety: Variety, products: Product[]) => {
+        // Only consider products that are in stock and available for instant delivery
+        const availableProducts = products.filter(p => 
+          p.inStock && 
+          p.availableForInstantDelivery && 
+          p.variety === variety.id
+        );
+
+        if (availableProducts.length === 0) return;
+
+        // Select the best product based on our algorithm
+        const bestProduct = selectBestProduct(availableProducts);
+
+        // Add the selected product to cart
+        const existingItem = get().items.find(
+          (item) => item.productId === bestProduct.id
+        );
+
+        let newItems;
+        if (existingItem) {
+          newItems = get().items.map((item) =>
+            item.productId === bestProduct.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          );
+        } else {
+          const newItem: CartItem = {
+            id: Math.random().toString(36).substr(2, 9),
+            productId: bestProduct.id,
+            name: bestProduct.name,
+            price: bestProduct.price,
+            quantity: 1,
+            image: bestProduct.image,
+            farmId: bestProduct.farmId,
+            farmName: bestProduct.farmName,
+            unit: bestProduct.unit,
+          };
+          newItems = [...get().items, newItem];
+        }
+
+        set({ items: newItems });
+      },
       
       addItem: (product: Product, quantity: number) => {
         set((state) => {
@@ -36,14 +110,15 @@ const useCartStore = create<CartState>()(
           } else {
             // Add new item if it doesn't exist
             const newItem: CartItem = {
-              id: `${product.id}-${product.farmId}-${Date.now()}`,
+              id: Math.random().toString(36).substr(2, 9),
               productId: product.id,
               farmId: product.farmId,
+              farmName: product.farmName,
               quantity,
               price: product.price,
               name: product.name,
               image: product.image,
-              zone: product.zone,
+              unit: product.unit,
             };
             return { items: [...state.items, newItem] };
           }
@@ -103,44 +178,33 @@ const useCartStore = create<CartState>()(
       getCartGroups: () => {
         try {
           const { items } = get();
-          if (!items || !Array.isArray(items)) return [];
           
-          // Group items by zone
-          const groupedByZone: Record<string, CartItem[]> = {};
+          // Group by farm
+          const farmGroups: Record<string, CartGroup> = {};
           
           items.forEach(item => {
-            const zone = item.zone || 'unknown';
-            if (!groupedByZone[zone]) {
-              groupedByZone[zone] = [];
+            if (!farmGroups[item.farmId]) {
+              farmGroups[item.farmId] = {
+                name: item.farmName,
+                items: [],
+                farms: {},
+              };
             }
-            groupedByZone[zone].push(item);
+            farmGroups[item.farmId].items.push(item);
+
+            // Add to farm subgroup
+            if (!farmGroups[item.farmId].farms[item.farmId]) {
+              farmGroups[item.farmId].farms[item.farmId] = {
+                name: item.farmName,
+                items: [],
+              };
+            }
+            farmGroups[item.farmId].farms[item.farmId].items.push(item);
           });
           
-          // Create cart groups
-          const cartGroups: CartGroup[] = Object.entries(groupedByZone).map(([zone, zoneItems]) => {
-            // Group items by farm within each zone
-            const farmGroups: Record<string, { name: string; items: CartItem[] }> = {};
-            
-            zoneItems.forEach(item => {
-              if (!farmGroups[item.farmId]) {
-                farmGroups[item.farmId] = {
-                  name: `Farm ${item.farmId}`, // This should be replaced with actual farm name
-                  items: [],
-                };
-              }
-              farmGroups[item.farmId].items.push(item);
-            });
-            
-            return {
-              zone,
-              items: zoneItems,
-              farms: farmGroups,
-            };
-          });
-          
-          return cartGroups;
+          return Object.values(farmGroups);
         } catch (error) {
-          console.error("Error grouping cart items:", error);
+          console.error('Error getting cart groups:', error);
           return [];
         }
       },

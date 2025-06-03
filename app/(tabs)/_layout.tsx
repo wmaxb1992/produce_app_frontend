@@ -1,9 +1,11 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Home, Search, Heart, ShoppingBag, User, Leaf } from 'lucide-react-native';
-import { View, Text } from 'react-native';
+import { View, Text, ImageBackground } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import useCartStore from '@/store/useCartStore';
+import SoilGradient from '../../assets/images/soil_gradient.png';
+import SoilGradient2 from '../../assets/images/soil_gradient2.png';
 
 export default function TabsLayout() {
   const { colors } = useTheme();
@@ -44,7 +46,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.subtext,
         tabBarStyle: {
-          backgroundColor: colors.card,
+          backgroundColor: 'transparent',
           borderTopColor: colors.border,
         },
         tabBarLabelStyle: {
@@ -56,6 +58,13 @@ export default function TabsLayout() {
         },
         headerTintColor: colors.text,
         headerShadowVisible: false,
+        tabBarBackground: () => (
+          <ImageBackground
+            source={SoilGradient2}
+            style={{ flex: 1, width: '100%', height: '180%', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+            resizeMode="stretch"
+          />
+        ),
       }}
     >
       <Tabs.Screen

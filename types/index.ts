@@ -68,6 +68,7 @@ export interface Variety {
   subcategoryId: string;
   emoji: string;
   description: string;
+  cardImage: string;
 }
 
 /**
@@ -134,6 +135,7 @@ export interface Product {
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  availableForInstantDelivery?: boolean;
   isOrganic?: boolean;
   unit: string;
   weight?: number;
@@ -308,7 +310,7 @@ export interface Cart {
 }
 
 export interface CartGroup {
-  zone: string;
+  name: string;
   items: CartItem[];
   farms: Record<string, { name: string; items: CartItem[] }>;
 }

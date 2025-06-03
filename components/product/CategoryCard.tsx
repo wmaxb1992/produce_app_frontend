@@ -46,10 +46,17 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, isSelected, onPre
               ? { uri: category.image }
               : {
                   '/assets/images/cat_vegetables.png': require('../../assets/images/cat_vegetables.png'),
+                  'assets/images/cat_vegetables.png': require('../../assets/images/cat_vegetables.png'),
                   '/assets/images/cat_herbs.png': require('../../assets/images/cat_herbs.png'),
+                  'assets/images/cat_herbs.png': require('../../assets/images/cat_herbs.png'),
                   '/assets/images/cat_eggs_dairy.png': require('../../assets/images/cat_eggs_dairy.png'),
+                  'assets/images/cat_eggs_dairy.png': require('../../assets/images/cat_eggs_dairy.png'),
                   '/assets/images/cat_jams.png': require('../../assets/images/cat_jams.png'),
+                  'assets/images/cat_jams.png': require('../../assets/images/cat_jams.png'),
                   '/assets/images/cat_fruits.png': require('../../assets/images/cat_fruits.png'),
+                  'assets/images/cat_fruits.png': require('../../assets/images/cat_fruits.png'),
+                  '/assets/images/cat_meat_fish.png': require('../../assets/images/cat_meat_fish.png'),
+                  'assets/images/cat_meat_fish.png': require('../../assets/images/cat_meat_fish.png'),
                 }[category.image] || require('../../assets/images/cat_fruits.png')
             }
             style={styles.image}

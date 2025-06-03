@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { Product, Category, Subcategory, Variety } from '@/types';
-import { mockProducts, mockCategories } from '@/mocks/productData';
+import { mockProducts, mockCategories, mockSubcategories, mockVarieties } from '@/mocks/productData';
 
 interface ProductState {
   products: Product[];
   categories: Category[];
+  subcategories: Subcategory[];
+  varieties: Variety[];
   selectedCategory: string | null;
   selectedSubcategory: string | null;
   selectedVariety: string | null;
@@ -28,11 +30,17 @@ interface ProductState {
   getPreHarvestProducts: () => Product[];
   getInSeasonProducts: () => Product[];
   getOrganicProducts: () => Product[];
+  setProducts: (products: Product[]) => void;
+  setCategories: (categories: Category[]) => void;
+  setSubcategories: (subcategories: Subcategory[]) => void;
+  setVarieties: (varieties: Variety[]) => void;
 }
 
 const useProductStore = create<ProductState>((set, get) => ({
   products: [],
   categories: [],
+  subcategories: [],
+  varieties: [],
   selectedCategory: null,
   selectedSubcategory: null,
   selectedVariety: null,
@@ -52,6 +60,8 @@ const useProductStore = create<ProductState>((set, get) => ({
       // This ensures everything is ready when isLoading becomes false
       const processedProducts = [...mockProducts];
       const processedCategories = [...mockCategories];
+      const processedSubcategories = [...mockSubcategories];
+      const processedVarieties = [...mockVarieties];
       
       // In a real app, you might do additional processing here
       // such as data normalization, computing derived properties, etc.
@@ -62,6 +72,8 @@ const useProductStore = create<ProductState>((set, get) => ({
       set({ 
         products: processedProducts,
         categories: processedCategories,
+        subcategories: processedSubcategories,
+        varieties: processedVarieties,
         filteredProducts: processedProducts,
         isLoading: false // Only set to false after everything is ready
       });
@@ -180,7 +192,19 @@ const useProductStore = create<ProductState>((set, get) => ({
   },
   
   getOrganicProducts: () => {
-    return get().products.filter(product => product.organic);
+    return get().products.filter(p => p.organic);
+  },
+  setProducts: (products: Product[]) => {
+    set({ products });
+  },
+  setCategories: (categories: Category[]) => {
+    set({ categories });
+  },
+  setSubcategories: (subcategories: Subcategory[]) => {
+    set({ subcategories });
+  },
+  setVarieties: (varieties: Variety[]) => {
+    set({ varieties });
   },
 }));
 

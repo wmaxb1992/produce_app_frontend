@@ -62,6 +62,9 @@ export const homeStyles = StyleSheet.create({
   filterButton: {
     marginLeft: margin.sm,
   },
+  sectionContent: {
+    marginTop: 8,
+  },
   section: {
     marginBottom: 0, // Removed gap
   },
