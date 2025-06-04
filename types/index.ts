@@ -172,6 +172,11 @@ export interface FarmProduct {
 }
 
 // Farm Types
+export interface FarmSpecialty {
+  emoji: string;
+  name: string;
+}
+
 export interface Farm {
   id: string;
   name: string;
@@ -193,7 +198,7 @@ export interface Farm {
   reviewCount: number;
   followers: number;
   certifications: string[];
-  specialties: string[];
+  specialties: FarmSpecialty[];
   foundedYear: number;
   contactInfo: {
     phone: string;

@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
-import VarietyChip from '@/components/product/VarietyChip';
+import VarietyCompactCard from '@/components/product/VarietyCompactCard';
 import { varietiesSectionStyles } from '@/styles/components/home/varietiesSection';
 import { useTheme } from '@/hooks/useTheme';
+import useProductStore from '@/store/useProductStore';
 import type { Variety } from '@/types';
 
 interface VarietiesSectionProps {
@@ -20,17 +21,28 @@ const VarietiesSection: React.FC<VarietiesSectionProps> = ({
 }) => {
   const router = useRouter();
   const { colors } = useTheme();
-  
-  if (!varieties.length) return null;
+  const { products } = useProductStore();
+
+  // Group products by variety
+  const varietyGroups = useMemo(() => {
+    return varieties.map(variety => ({
+      variety,
+      products: products.filter(p => p.variety === variety.id)
+    }));
+  }, [varieties, products]);
+
+  if (!varietyGroups.length) return null;
 
   const navigateToVarietiesScreen = () => {
     router.push('/browse');
   };
 
   return (
-    <View style={[varietiesSectionStyles.section, { marginTop: 0 }]}>
+    <View style={[varietiesSectionStyles.section, { marginTop: 0 }]}> 
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {varietyGroups[0]?.variety?.emoji ? `${varietyGroups[0].variety.emoji} ` : ''}{title}
+        </Text>
         <TouchableOpacity 
           style={styles.viewAllButton}
           onPress={navigateToVarietiesScreen}
@@ -39,20 +51,20 @@ const VarietiesSection: React.FC<VarietiesSectionProps> = ({
           <ChevronRight size={16} color={colors.primary} />
         </TouchableOpacity>
       </View>
-      
-      <ScrollView
+      <FlatList
+        data={varietyGroups}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={varietiesSectionStyles.container}
-      >
-        {varieties.map((variety: Variety) => (
-          <VarietyChip
-            key={variety.id}
-            variety={variety}
-            isSelected={selectedVariety === variety.id}
+        contentContainerStyle={varietiesSectionStyles.container}
+        renderItem={({ item }) => (
+          <VarietyCompactCard 
+            variety={item.variety}
+            products={item.products}
+            onPress={() => {}}
           />
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(item) => item.variety.id}
+      />
     </View>
   );
 };

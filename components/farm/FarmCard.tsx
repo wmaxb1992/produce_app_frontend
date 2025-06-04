@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MapPin, Star } from 'lucide-react-native';
 import { Farm } from '@/types';
@@ -51,49 +51,51 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, onPress, listView }) => {
             </View>
           </View>
         </View>
-        
-        <Image 
-          source={{ uri: farm.coverImage }} 
-          style={styles.coverImage}
-          resizeMode="cover"
-        />
-        
-        <View style={styles.footer}>
-          <View style={styles.ratingContainer}>
+        {/* Image and overlays container */}
+        <View style={styles.imageContainer}>
+          <Image 
+            source={{ uri: farm.coverImage }} 
+            style={styles.coverImage}
+            resizeMode="cover"
+          />
+          {/* Rating at top right, no overlay */}
+          <View style={styles.ratingTopRight}>
             <Star 
               size={16} 
               color={colors.secondary} 
               fill={colors.secondary} 
             />
-            <Text style={[styles.rating, { color: colors.text }]}>
+            <Text style={[styles.rating, styles.ratingTextShadow, { color: colors.white }]}> {/* white for contrast */}
               {farm.rating.toFixed(1)} ({farm.reviewCount})
             </Text>
           </View>
-          
-          <View style={styles.specialtiesContainer}>
-            {farm.specialties.slice(0, 2).map((specialty, index) => (
-              <View 
-                key={index} 
-                style={[
-                  styles.specialtyBadge, 
-                  { backgroundColor: colors.gray[100] }
-                ]}
-              >
-                <Text 
-                  style={[styles.specialtyText, { color: colors.text }]}
-                  numberOfLines={1}
+          {/* Specialties overlay at bottom */}
+          <View style={styles.overlayContainer}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.specialtiesContainerOverlay}
+            >
+              {farm.specialties.map((specialty, index) => (
+                <View 
+                  key={index} 
+                  style={styles.specialtyBadge}
                 >
-                  {specialty}
-                </Text>
-              </View>
-            ))}
-            {farm.specialties.length > 2 && (
-              <Text style={[styles.moreText, { color: colors.subtext }]}>
-                +{farm.specialties.length - 2}
-              </Text>
-            )}
+                  {typeof specialty === 'object' && specialty.emoji && (
+                    <Text style={styles.specialtyEmoji}>{specialty.emoji}</Text>
+                  )}
+                  <Text 
+                    style={[styles.specialtyText, { color: colors.white }]} 
+                    numberOfLines={1}
+                  >
+                    {typeof specialty === 'object' && specialty.name ? specialty.name : specialty}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
           </View>
         </View>
+        {/* End overlays */}
       </TouchableOpacity>
     </Card>
   );
@@ -142,44 +144,68 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
   },
-  footer: {
-    padding: 12,
+  overlayContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingVertical: 0,
+    paddingHorizontal: 2,
+    zIndex: 2,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    minHeight: 34,
   },
-  ratingContainer: {
+  ratingTopRight: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    minWidth: 80,
+    zIndex: 3,
+    backgroundColor: 'transparent',
+  },
+  ratingTextShadow: {
+    textShadowColor: 'rgba(0,0,0,0.7)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+    marginLeft: 4,
   },
   rating: {
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 4,
   },
-  specialtiesContainer: {
+  specialtiesContainerOverlay: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
-    flex: 1,
-    justifyContent: 'flex-end',
+    flexWrap: 'nowrap',
+    minHeight: 32,
   },
   specialtyBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginLeft: 6,
-    marginBottom: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 14,
+    marginRight: 8,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    minHeight: 22,
+    justifyContent: 'center',
   },
   specialtyText: {
     fontSize: 12,
     fontWeight: '500',
     maxWidth: 80,
   },
-  moreText: {
-    fontSize: 12,
-    marginLeft: 6,
+  imageContainer: {
+    position: 'relative',
+  },
+  specialtyEmoji: {
+    marginRight: 4,
+    fontSize: 16,
+    lineHeight: 18,
   },
 });
 

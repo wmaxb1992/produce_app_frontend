@@ -333,6 +333,13 @@ const useUserStore = create<UserState>()(
     {
       name: 'user-storage',
       storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({ user: state.user, isLoggedIn: state.isLoggedIn }),
+      onRehydrateStorage: () => (state) => {
+        // If no user data is found in storage, initialize with mock data
+        if (!state?.user) {
+          state?.set({ user: mockUser, isLoggedIn: true });
+        }
+      },
     }
   )
 );

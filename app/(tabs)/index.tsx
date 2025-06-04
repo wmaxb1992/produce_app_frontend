@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, FlatList, Image, Animated, StyleSheet, Easing, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Filter, Plus, Minus, Grid, List, ArrowUp, Home } from 'lucide-react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList, Image, Animated, StyleSheet, Easing, Dimensions, TextInput, Platform } from 'react-native';
+import { Stack, useRouter } from 'expo-router';
+import { Filter, Plus, Minus, Grid, List, ArrowUp, Home, Search, X } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/useTheme';
 import { useSeasonalStyles } from '@/utils/seasonalStyles';
 import useProductStore from '@/store/useProductStore';
@@ -11,6 +12,7 @@ import useSubscriptionStore from '@/store/useSubscriptionStore';
 import useUserStore from '@/store/useUserStore';
 import type { Category, Subcategory, Variety, Product, Farm, FarmPost, Address } from '@/types';
 import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
+import { ScrollView as RNScrollView } from 'react-native';
 import ProductCard from '@/components/product/ProductCard';
 import FarmPostCard from '@/components/farm/FarmPostCard';
 import { homeStyles } from '@/styles/layouts/home';
@@ -38,6 +40,9 @@ import SubscriptionBundlesSection from '@/components/home/SubscriptionBundlesSec
 import SeasonalHeader from '@/components/home/SeasonalHeader';
 import SeasonalProductsSection from '@/components/home/SeasonalProductsSection';
 import InstantlyAvailableSection from '@/components/home/InstantlyAvailableSection';
+import CategoryCard from '@/components/product/CategoryCard';
+import SubcategoryCard from '@/components/product/SubcategoryCard';
+import FarmCard from '@/components/farm/FarmCard';
 
 // Local styles for components not yet moved to separate style files
 const styles = StyleSheet.create({
@@ -77,14 +82,14 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   featuredCard: {
-    width: 200,
+    width: 120,
     backgroundColor: '#fff',
     borderRadius: 8,
     overflow: 'hidden',
   },
   featuredImage: {
     width: '100%',
-    height: 120,
+    height: 70,
     resizeMode: 'cover',
   },
   featuredImageStepper: {
@@ -108,35 +113,35 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   featuredInfo: {
-    padding: 8,
+    padding: 6,
   },
   featuredTitle: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: '600',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   featuredMeta: {
     flexDirection: 'row',
-    marginBottom: 6,
+    marginBottom: 2,
   },
   featuredRating: {
-    fontSize: 12,
+    fontSize: 9,
     color: '#666',
   },
   featuredTime: {
-    fontSize: 12,
+    fontSize: 9,
     color: '#666',
   },
   farmInfo: {
-    marginBottom: 8,
+    marginBottom: 2,
   },
   farmName: {
-    fontSize: 12,
+    fontSize: 9,
     fontWeight: '500',
     color: '#333',
   },
   farmLocation: {
-    fontSize: 11,
+    fontSize: 8,
     color: '#666',
   },
   addToCartContainer: {
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   featuredPrice: {
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '700',
   },
   filteredProductsContainer: {
@@ -411,11 +416,42 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Filter state for carousels
+  const [selectedFilter, setSelectedFilter] = useState<string>('mostPopular');
+
+  // Define filter options (now with emoji)
+  const filterOptions = [
+    { key: 'mostPopular', label: 'Most Popular', emoji: '🔥' },
+    { key: 'stoneFruit', label: 'Stone Fruit', emoji: '🍑' },
+    { key: 'citrus', label: 'Citrus', emoji: '🍊' },
+    { key: 'berries', label: 'Berries', emoji: '🫐' },
+    { key: 'recentlyBought', label: 'Recently Bought', emoji: '🛒' },
+  ];
+
+  // Get subcategories for the selected category
+  const subcategories = selectedCategory
+    ? categories.find(cat => cat.id === selectedCategory)?.subcategories ?? []
+    : [];
+
+  // Filter subcategories based on selected filter (must be after subcategories is defined)
+  const filteredSubcategories = selectedFilter === 'mostPopular'
+    ? subcategories
+    : subcategories.filter(sub =>
+        sub.name.toLowerCase().includes(
+          selectedFilter === 'stoneFruit' ? 'stone' :
+          selectedFilter === 'citrus' ? 'citrus' :
+          selectedFilter === 'berries' ? 'berr' :
+          selectedFilter === 'recentlyBought' ? 'recent' : ''
+        )
+      );
+
   const [freshProducts, setFreshProducts] = useState<Product[]>([]);
   const [preHarvestProducts, setPreHarvestProducts] = useState<Product[]>([]);
   const [inSeasonProducts, setInSeasonProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [isListView, setIsListView] = useState(true);
+  const [isListView, setIsListView] = useState(false);
+  // Instantly show/hide banner based on selectedCategory
+  const showBanner = !selectedCategory;
 
   const getFreshProducts = useCallback(() => {
     return products.filter(product => product.freshness != null && product.freshness >= 90 && product.inStock);
@@ -477,9 +513,6 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const selectedCategoryObj = selectedCategory
     ? categories.find(cat => cat.id === selectedCategory)
     : null;
-
-  // Get subcategories for the selected category
-  const subcategories = selectedCategoryObj?.subcategories ?? [];
 
   // Get the selected subcategory object
   const selectedSubcategoryObj = selectedSubcategory
@@ -611,6 +644,23 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
     );
   };
 
+  // Helper to get most popular varieties for the selected category
+  const getMostPopularVarieties = () => {
+    if (!selectedCategory) return [];
+    const cat = categories.find(cat => cat.id === selectedCategory);
+    if (!cat) return [];
+    // Flatten all varieties in all subcategories
+    const allVarieties = cat.subcategories.flatMap(sub => sub.varieties);
+    // Get review counts for each variety from products
+    const varietyReviewCounts = allVarieties.map(variety => {
+      const productsForVariety = products.filter(p => p.variety === variety.id);
+      const totalReviews = productsForVariety.reduce((sum, p) => sum + (p.reviewCount || 0), 0);
+      return { ...variety, _reviewCount: totalReviews };
+    });
+    // Sort by review count descending and take top 8
+    return varietyReviewCounts.sort((a, b) => b._reviewCount - a._reviewCount).slice(0, 8);
+  };
+
   if (isLoading) {
     return renderSkeletonLoader();
   }
@@ -666,15 +716,74 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           scrollEventThrottle={16}
         >
           {/* Categories - should be first under search bar */}
-          <CategoriesSection 
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onCategoryPress={handleCategoryPress}
-            onClearFilters={handleClearFilters}
-          />
+          <View style={homeStyles.section}>
+            <View style={homeStyles.sectionHeader}>
+              <Text style={[homeStyles.sectionTitle, { color: colors.text }]}>
+                Categories
+              </Text>
+              {selectedCategory && (
+                <TouchableOpacity
+                  style={[homeStyles.clearButton, { backgroundColor: colors.card }]}
+                  onPress={handleClearFilters}
+                >
+                  <Home size={20} color={colors.primary} />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={homeStyles.categoriesContainer}
+            >
+              {categories.map((category: Category) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  isSelected={selectedCategory === category.id}
+                  onPress={() => handleCategoryPress(category.id)}
+                />
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Filter Buttons - Only show if a category is selected */}
+          {selectedCategory && (
+            <View style={[homeStyles.section, { marginTop: 10 }]}>
+              <RNScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={{ marginLeft: 8 }}
+                contentContainerStyle={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+              >
+                {filterOptions.map(option => (
+                  <TouchableOpacity
+                    key={option.key}
+                    style={{
+                      backgroundColor: selectedFilter === option.key ? colors.primary : colors.gray[200],
+                      borderRadius: 8,
+                      paddingHorizontal: 8,
+                      paddingVertical: 4,
+                      marginRight: 6,
+                    }}
+                    onPress={() => setSelectedFilter(option.key)}
+                  >
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ fontSize: 13, marginRight: 4 }}>{option.emoji}</Text>
+                      <Text style={{ color: selectedFilter === option.key ? colors.white : colors.text, fontWeight: '500', fontSize: 12 }}>
+                        {option.label}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </RNScrollView>
+            </View>
+          )}
 
           {/* Magic Basket Banner */}
-          <MagicBasketBanner />
+          {showBanner && (
+            <MagicBasketBanner />
+          )}
 
           {/* Featured Farms */}
           {(!selectedCategory && farms.length > 0) && (
@@ -684,8 +793,8 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           {/* Instantly Available Section */}
           <InstantlyAvailableSection />
 
-          {/* Subcategories - Only show if a category is selected */}
-          {selectedCategory && subcategories.length > 0 && (
+          {/* Subcategories - Only show if a category is selected and isListView is true */}
+          {selectedCategory && subcategories.length > 0 && isListView && (
             <SubcategoriesSection 
               subcategories={subcategories}
               selectedSubcategory={selectedSubcategory}
@@ -693,12 +802,33 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             />
           )}
 
-          {/* Varieties - Only show if a subcategory is selected and not in list view */}
-          {selectedSubcategory && varieties.length > 0 && !isListView && (
-            <VarietiesSection 
-              varieties={varieties}
+          {/* Varieties Carousels - Show a carousel for each subcategory if a category is selected and not in list view */}
+          {selectedCategory && selectedFilter === 'mostPopular' && !isListView && (
+            <VarietiesSection
+              varieties={getMostPopularVarieties()}
               selectedVariety={selectedVariety}
+              title={'🔥 Most Popular'}
             />
+          )}
+          {selectedCategory && filteredSubcategories.length > 0 && !isListView && (
+            filteredSubcategories.map((subcategory, idx) => (
+              <React.Fragment key={subcategory.id}>
+                {idx > 0 && (
+                  <View style={{
+                    height: 1,
+                    backgroundColor: '#E5E5E5',
+                    marginVertical: 16,
+                    marginHorizontal: 16,
+                    borderRadius: 1,
+                  }} />
+                )}
+                <VarietiesSection
+                  varieties={subcategory.varieties}
+                  selectedVariety={selectedVariety}
+                  title={subcategory.name}
+                />
+              </React.Fragment>
+            ))
           )}
           
           {/* Seasonal Products Section */}
@@ -952,23 +1082,25 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       </Animated.View>
 
       {/* Floating Home Button in top right that stays fixed */}
-      <View style={[
-        homeStyles.floatingTopRightButton
-      ]}>
-        <BlurView intensity={30} tint={isDark ? "dark" : "light"} style={homeStyles.blurContainer} />
-        <TouchableOpacity 
-          style={[
-            homeStyles.buttonContent, 
-            { backgroundColor: colors.primary }
-          ]}
-          onPress={() => {
-            // Navigate to home or perform other action
-            router.push('/');
-          }}
-        >
-          <Home size={20} color={colors.white} />
-        </TouchableOpacity>
-      </View>
+      {selectedCategory && (
+        <View style={[
+          homeStyles.floatingTopRightButton
+        ]}>
+          <BlurView intensity={30} tint={isDark ? "dark" : "light"} style={homeStyles.blurContainer} />
+          <TouchableOpacity 
+            style={[
+              homeStyles.buttonContent, 
+              { backgroundColor: colors.primary }
+            ]}
+            onPress={() => {
+              // Navigate to home or perform other action
+              router.push('/');
+            }}
+          >
+            <Home size={20} color={colors.white} />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

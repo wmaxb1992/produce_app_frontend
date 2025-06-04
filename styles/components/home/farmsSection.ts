@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const farmsSectionStyles = StyleSheet.create({
   section: {
-    marginBottom: 16,
+    marginBottom: -9,
   },
   sectionHeader: {
     flexDirection: 'row',

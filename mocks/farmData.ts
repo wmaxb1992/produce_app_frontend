@@ -42,7 +42,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 246,
     followers: 512,
     certifications: ['CDFA Certified', 'GAP Certified', 'Sustainably Grown'],
-    specialties: ['Cherries', 'Stone Fruits', 'Berries', 'Citrus'],
+    specialties: [
+      { emoji: '🍒', name: 'Cherries' },
+      { emoji: '🍑', name: 'Stone Fruits' },
+      { emoji: '🫐', name: 'Berries' },
+      { emoji: '🍊', name: 'Citrus' },
+    ],
     foundedYear: 1989,
     contactInfo: {
       phone: '(661) 330-0100',
@@ -95,7 +100,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 378,
     followers: 623,
     certifications: ['CCOF Certified Organic', 'Santa Monica Farmers Market Vendor'],
-    specialties: ['Gaviota Strawberries', 'Seascape Strawberries', 'Seasonal Vegetables'],
+    specialties: [
+      { emoji: '🍓', name: 'Gaviota Strawberries' },
+      { emoji: '🍓', name: 'Seascape Strawberries' },
+      { emoji: '🥕', name: 'Seasonal Vegetables' },
+    ],
     foundedYear: 1969,
     contactInfo: {
       phone: '(805) 988-3061',
@@ -147,7 +156,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 203,
     followers: 418,
     certifications: ['USDA Organic', 'CCOF Certified', 'Global G.A.P. Certified'],
-    specialties: ['Heirloom Tomatoes', 'Peppers', 'Organic Vegetables'],
+    specialties: [
+      { emoji: '🍅', name: 'Heirloom Tomatoes' },
+      { emoji: '🌶', name: 'Peppers' },
+      { emoji: '🥬', name: 'Organic Vegetables' },
+    ],
     foundedYear: 1988,
     contactInfo: {
       phone: '(805) 737-7127',
@@ -200,7 +213,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 184,
     followers: 329,
     certifications: ['USDA Organic', 'Certified California Organic Farmer'],
-    specialties: ['Baby Lettuces', 'Culinary Herbs', 'Leafy Greens'],
+    specialties: [
+      { emoji: '🥬', name: 'Baby Lettuces' },
+      { emoji: '🌿', name: 'Culinary Herbs' },
+      { emoji: '🥬', name: 'Leafy Greens' },
+    ],
     foundedYear: 1983,
     contactInfo: {
       phone: '(818) 767-6208',
@@ -252,7 +269,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 107,
     followers: 246,
     certifications: ['American Grassfed Certified', 'Animal Welfare Approved', 'Holistic Management Verified'],
-    specialties: ['Grass-fed Beef', 'Pasture-raised Lamb', 'Regenerative Ranching'],
+    specialties: [
+      { emoji: '🐄', name: 'Grass-fed Beef' },
+      { emoji: '🐑', name: 'Pasture-raised Lamb' },
+      { emoji: '🌱', name: 'Regenerative Ranching' },
+    ],
     foundedYear: 2012,
     contactInfo: {
       phone: '(805) 525-1234',
@@ -304,7 +325,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 235,
     followers: 387,
     certifications: ['California Certified Organic Farmers', 'Farmers Market Federation'],
-    specialties: ['Heirloom Potatoes', 'Specialty Melons', 'Rainbow Carrots'],
+    specialties: [
+      { emoji: '🥔', name: 'Heirloom Potatoes' },
+      { emoji: '🍈', name: 'Specialty Melons' },
+      { emoji: '🥕', name: 'Rainbow Carrots' },
+    ],
     foundedYear: 1977,
     contactInfo: {
       phone: '(661) 823-9092',
@@ -357,7 +382,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 118,
     followers: 215,
     certifications: ['GAP Certified', 'California Grown'],
-    specialties: ['Sweet Corn', 'Watermelons', 'Summer Squash'],
+    specialties: [
+      { emoji: '🌽', name: 'Sweet Corn' },
+      { emoji: '🍉', name: 'Watermelons' },
+      { emoji: '🧅', name: 'Summer Squash' },
+    ],
     foundedYear: 1968,
     contactInfo: {
       phone: '(559) 584-9026',
@@ -409,7 +438,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 164,
     followers: 278,
     certifications: ['CCOF Certified Organic', 'Avocado Green Program', 'Fair Trade Certified'],
-    specialties: ['Organic Avocados', 'Citrus', 'Cherimoya', 'Dragon Fruit'],
+    specialties: [
+      { emoji: '🥑', name: 'Organic Avocados' },
+      { emoji: '🍊', name: 'Citrus' },
+      { emoji: '🍍', name: 'Cherimoya' },
+      { emoji: '🐉', name: 'Dragon Fruit' },
+    ],
     foundedYear: 1982,
     contactInfo: {
       phone: '(760) 728-8325',
@@ -461,7 +495,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 132,
     followers: 256,
     certifications: ['CCOF Certified Organic', 'Farmers Market Federation'],
-    specialties: ['Salad Greens', 'Heirloom Tomatoes', 'Edible Flowers'],
+    specialties: [
+      { emoji: '🥬', name: 'Salad Greens' },
+      { emoji: '🍅', name: 'Heirloom Tomatoes' },
+      { emoji: '🌸', name: 'Edible Flowers' },
+    ],
     foundedYear: 1993,
     contactInfo: {
       phone: '(559) 561-4665',
@@ -514,7 +552,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 96,
     followers: 183,
     certifications: ['USDA Organic', 'Ocean Friendly Farming'],
-    specialties: ['Strawberries', 'Blackberries', 'Spring Mix', 'Arugula'],
+    specialties: [
+      { emoji: '🍓', name: 'Strawberries' },
+      { emoji: '🍇', name: 'Blackberries' },
+      { emoji: '🥬', name: 'Spring Mix' },
+      { emoji: '🥬', name: 'Arugula' },
+    ],
     foundedYear: 2008,
     contactInfo: {
       phone: '(805) 487-9876',
@@ -566,7 +609,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 187,
     followers: 562,
     certifications: ['Demeter Certified Biodynamic', 'CCOF Certified Organic', 'Regenerative Organic Certified'],
-    specialties: ['Heirloom Fruits', 'Heritage Vegetables', 'Pasture-Raised Eggs'],
+    specialties: [
+      { emoji: '🍒', name: 'Heirloom Fruits' },
+      { emoji: '🥬', name: 'Heritage Vegetables' },
+      { emoji: '🐄', name: 'Pasture-Raised Eggs' },
+    ],
     foundedYear: 2011,
     contactInfo: {
       phone: '(805) 523-9876',
@@ -619,7 +666,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 142,
     followers: 325,
     certifications: ['American Grassfed Certified', 'Animal Welfare Approved', 'Global Animal Partnership Step 4'],
-    specialties: ['Grass-fed Beef', 'Pasture-raised Chicken', 'Heritage Pork'],
+    specialties: [
+      { emoji: '🐄', name: 'Grass-fed Beef' },
+      { emoji: '🐔', name: 'Pasture-raised Chicken' },
+      { emoji: '🐷', name: 'Heritage Pork' },
+    ],
     foundedYear: 2015,
     contactInfo: {
       phone: '(661) 871-1234',
@@ -672,7 +723,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 116,
     followers: 194,
     certifications: ['USDA Organic', 'California Certified Organic Farmers'],
-    specialties: ['Medjool Dates', 'Deglet Noor Dates', 'Barhi Dates', 'Date Products'],
+    specialties: [
+      { emoji: '🌴', name: 'Medjool Dates' },
+      { emoji: '🌴', name: 'Deglet Noor Dates' },
+      { emoji: '🌴', name: 'Barhi Dates' },
+      { emoji: '🥛', name: 'Date Products' },
+    ],
     foundedYear: 1999,
     contactInfo: {
       phone: '(760) 396-2345',
@@ -724,7 +780,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 128,
     followers: 237,
     certifications: ['Good Agricultural Practices Certified', 'California Grown'],
-    specialties: ['Valencia Oranges', 'Meyer Lemons', 'Pink Grapefruit', 'Specialty Citrus'],
+    specialties: [
+      { emoji: '🍊', name: 'Valencia Oranges' },
+      { emoji: '🍋', name: 'Meyer Lemons' },
+      { emoji: '🍊', name: 'Pink Grapefruit' },
+      { emoji: '🍊', name: 'Specialty Citrus' },
+    ],
     foundedYear: 1984,
     contactInfo: {
       phone: '(951) 780-5678',
@@ -776,7 +837,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 95,
     followers: 156,
     certifications: ['Food Safety Certified', 'Greenhouse Growers Certified', 'Sustainable Agriculture'],
-    specialties: ['Vine-ripened Tomatoes', 'English Cucumbers', 'Greenhouse Peppers'],
+    specialties: [
+      { emoji: '🍅', name: 'Vine-ripened Tomatoes' },
+      { emoji: '🥒', name: 'English Cucumbers' },
+      { emoji: '🌶', name: 'Greenhouse Peppers' },
+    ],
     foundedYear: 1975,
     contactInfo: {
       phone: '(805) 524-9876',
@@ -828,7 +893,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 135,
     followers: 227,
     certifications: ['California Clean Farming', 'Good Agricultural Practices Certified'],
-    specialties: ['White Peaches', 'Yellow Nectarines', 'Pluots', 'Apricots'],
+    specialties: [
+      { emoji: '🍑', name: 'White Peaches' },
+      { emoji: '🍋', name: 'Yellow Nectarines' },
+      { emoji: '🍐', name: 'Pluots' },
+      { emoji: '🍐', name: 'Apricots' },
+    ],
     foundedYear: 1976,
     contactInfo: {
       phone: '(559) 591-5678',
@@ -880,7 +950,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 198,
     followers: 342,
     certifications: ['Sustainable Agriculture', 'California Farm to Table'],
-    specialties: ['Culinary Herbs', 'Specialty Lettuces', 'Edible Flowers'],
+    specialties: [
+      { emoji: '🌿', name: 'Culinary Herbs' },
+      { emoji: '🥬', name: 'Specialty Lettuces' },
+      { emoji: '🌸', name: 'Edible Flowers' },
+    ],
     foundedYear: 1980,
     contactInfo: {
       phone: '(805) 684-1234',
@@ -933,7 +1007,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 152,
     followers: 286,
     certifications: ['CCOF Certified Organic', 'Food Alliance Certified'],
-    specialties: ['Baby Lettuces', 'Specialty Greens', 'Root Vegetables'],
+    specialties: [
+      { emoji: '🥬', name: 'Baby Lettuces' },
+      { emoji: '🥬', name: 'Specialty Greens' },
+      { emoji: '🥔', name: 'Root Vegetables' },
+    ],
     foundedYear: 2000,
     contactInfo: {
       phone: '(760) 399-5678',
@@ -986,7 +1064,12 @@ export const mockFarms: Farm[] = [
     reviewCount: 167,
     followers: 298,
     certifications: ['CCOF Certified Organic', 'American Farmland Trust'],
-    specialties: ['Pink Lady Apples', 'Fuji Apples', 'Honeycrisp Apples', 'Specialty Apple Varieties'],
+    specialties: [
+      { emoji: '🍎', name: 'Pink Lady Apples' },
+      { emoji: '🍎', name: 'Fuji Apples' },
+      { emoji: '��', name: 'Honeycrisp Apples' },
+      { emoji: '🍎', name: 'Specialty Apple Varieties' },
+    ],
     foundedYear: 1995,
     contactInfo: {
       phone: '(661) 766-2315',
@@ -1038,7 +1121,11 @@ export const mockFarms: Farm[] = [
     reviewCount: 142,
     followers: 253,
     certifications: ['Animal Welfare Approved', 'Humane Farm Animal Care'],
-    specialties: ['Goat Milk', 'Goat Cheese', 'Goat Milk Yogurt'],
+    specialties: [
+      { emoji: '🐐', name: 'Goat Milk' },
+      { emoji: '🧀', name: 'Goat Cheese' },
+      { emoji: '🥛', name: 'Goat Milk Yogurt' },
+    ],
     foundedYear: 2006,
     contactInfo: {
       phone: '(909) 926-9776',

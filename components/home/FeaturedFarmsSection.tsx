@@ -34,10 +34,10 @@ const FeaturedFarmsSection: React.FC<FeaturedFarmsSectionProps> = ({ farms }) =>
           style={farmsSectionStyles.seeAllButton}
           onPress={handleSeeAllPress}
         >
-          <Text style={[farmsSectionStyles.seeAllText, { color: themeColors.primary }]}>
+          <Text style={[farmsSectionStyles.seeAllText, { color: themeColors.subtext }]}>
             See All
           </Text>
-          <ChevronRight size={16} color={themeColors.primary} />
+          <ChevronRight size={16} color={themeColors.subtext} />
         </TouchableOpacity>
       </View>
       

@@ -69,11 +69,10 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, isSelected, onPre
         style={[
           styles.name, 
           { 
-            color: colors.text || defaultColors.text,
-            textDecorationLine: isSelected ? 'underline' : 'none'
+            color: (colors && (colors as any).text) ? (colors as any).text : defaultColors.light.text,
+            maxWidth: 72
           }
         ]}
-        numberOfLines={1}
       >
         {category.name}
       </Text>
