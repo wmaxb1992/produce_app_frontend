@@ -76,7 +76,7 @@ const palette = {
 
 // Light theme colors
 const light = {
-  primary: palette.green[200],
+  primary: palette.green[900],
   secondary: palette.amber[500],
   background: '#FFFFFF',
   card: '#FFFFFF',
@@ -90,7 +90,7 @@ const light = {
   white: '#FFFFFF',
   black: '#000000',
   gray: palette.gray,
-  seasonal: palette.green[500],
+  seasonal: palette.green[900],
   spring: palette.green[500],
   summer: palette.amber[500],
   fall: palette.brown[500],
@@ -119,7 +119,7 @@ const dark = {
     700: palette.gray[200],
     800: palette.gray[100],
   },
-  seasonal: palette.green[400],
+  seasonal: palette.green[900],
   spring: palette.green[400],
   summer: palette.amber[400],
   fall: palette.brown[400],

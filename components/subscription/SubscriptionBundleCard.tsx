@@ -44,6 +44,20 @@ const SubscriptionBundleCard: React.FC<SubscriptionBundleCardProps> = ({
             style={styles.image}
             resizeMode="cover"
           />
+          <View style={styles.itemsBadgeOverlay}>
+            <View style={styles.itemRowOverlay}>
+              <Leaf size={12} color={colors.success} />
+              <Text style={styles.itemTextOverlay}>{bundle.items.vegetables}</Text>
+            </View>
+            <View style={styles.itemRowOverlay}>
+              <Apple size={12} color={colors.warning} />
+              <Text style={styles.itemTextOverlay}>{bundle.items.fruits}</Text>
+            </View>
+            <View style={styles.itemRowOverlay}>
+              <Flower2 size={12} color={colors.info} />
+              <Text style={styles.itemTextOverlay}>{bundle.items.herbs}</Text>
+            </View>
+          </View>
           <View style={[styles.discountBadge, { backgroundColor: colors.primary }]}>
             <Text style={styles.discountText}>Save {bundle.discountPercentage}%</Text>
           </View>
@@ -59,29 +73,6 @@ const SubscriptionBundleCard: React.FC<SubscriptionBundleCardProps> = ({
               From {bundle.farmName}
             </Text>
           )}
-          
-          <View style={styles.itemsContainer}>
-            <View style={styles.itemRow}>
-              <Leaf size={16} color={colors.success} style={styles.icon} />
-              <Text style={[styles.itemText, { color: colors.text }]}>
-                {bundle.items.vegetables} vegetables
-              </Text>
-            </View>
-            
-            <View style={styles.itemRow}>
-              <Apple size={16} color={colors.warning} style={styles.icon} />
-              <Text style={[styles.itemText, { color: colors.text }]}>
-                {bundle.items.fruits} fruits
-              </Text>
-            </View>
-            
-            <View style={styles.itemRow}>
-              <Flower2 size={16} color={colors.info} style={styles.icon} />
-              <Text style={[styles.itemText, { color: colors.text }]}>
-                {bundle.items.herbs} herbs
-              </Text>
-            </View>
-          </View>
           
           <View style={styles.priceContainer}>
             <Text style={[styles.price, { color: colors.text }]}>
@@ -102,7 +93,7 @@ const SubscriptionBundleCard: React.FC<SubscriptionBundleCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     marginRight: 12,
-    width: 250,
+    width: 160,
     borderRadius: 12,
     overflow: 'hidden',
     padding: 0,
@@ -113,7 +104,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: 'relative',
     width: '100%',
-    height: 140,
+    height: 80,
   },
   image: {
     width: '100%',
@@ -121,44 +112,51 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
+  itemsBadgeOverlay: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    borderRadius: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    zIndex: 2,
+  },
+  itemRowOverlay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 1,
+  },
+  itemTextOverlay: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginLeft: 2,
+    color: '#333',
+  },
   discountBadge: {
     position: 'absolute',
-    top: 12,
-    right: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    top: 6,
+    right: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 10,
   },
   discountText: {
     color: 'white',
     fontWeight: '600',
-    fontSize: 12,
+    fontSize: 10,
   },
   contentContainer: {
-    padding: 12,
+    padding: 8,
   },
   name: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '600',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   farmName: {
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  itemsContainer: {
-    marginBottom: 10,
-  },
-  itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    fontSize: 9,
     marginBottom: 4,
-  },
-  icon: {
-    marginRight: 6,
-  },
-  itemText: {
-    fontSize: 13,
   },
   priceContainer: {
     flexDirection: 'row',
@@ -166,16 +164,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   price: {
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: '700',
   },
   badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
   },
   badgeText: {
-    fontSize: 12,
+    fontSize: 9,
     fontWeight: '500',
   },
 });

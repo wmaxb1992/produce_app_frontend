@@ -108,7 +108,7 @@ export default function FarmDetailScreen() {
           headerTransparent: true,
           headerLeft: () => (
             <TouchableOpacity 
-              style={[styles.headerButton, { backgroundColor: colors.white + 'CC' }]}
+              style={styles.headerButton}
               onPress={() => router.back()}
             >
               <ChevronLeft size={24} color={colors.text} />
@@ -116,7 +116,7 @@ export default function FarmDetailScreen() {
           ),
           headerRight: () => (
             <TouchableOpacity 
-              style={[styles.headerButton, { backgroundColor: colors.white + 'CC' }]}
+              style={styles.headerButton}
             >
               <Share2 size={20} color={colors.text} />
             </TouchableOpacity>

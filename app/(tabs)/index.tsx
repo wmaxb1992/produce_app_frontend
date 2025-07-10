@@ -1043,17 +1043,22 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           {/* From the Farms - Only show when no category is selected */}
           {!selectedCategory && farmPosts.length > 0 && (
             <View style={styles.section}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}> 
                 From the Farms
               </Text>
-              
-              {farmPosts.slice(0, 3).map(post => (
-                <FarmPostCard 
-                  key={post.id}
-                  post={post}
-                  onPress={() => handlePostPress(post.id)}
-                />
-              ))}
+              <FlatList
+                data={farmPosts.slice(0, 8)}
+                keyExtractor={post => post.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ gap: 16 }}
+                renderItem={({ item: post }) => (
+                  <FarmPostCard 
+                    post={post}
+                    onPress={() => handlePostPress(post.id)}
+                  />
+                )}
+              />
             </View>
           )}
 
